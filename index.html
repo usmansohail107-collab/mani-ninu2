@@ -270,7 +270,7 @@ $("bChar").onclick=()=>openChars();
 const MOMH=()=>"<small>Pick a moment</small><br>"+[["auto","⏱ Auto"],["kiss","💋 Kiss"],["longkiss","💗 Long kiss"],["cuddle","🧣 Cuddle"],["heartbeat","💓 Heartbeat"],["movie","🎬 Movie night"],["dance","💃 Slow dance"],["goodnight","🌙 Goodnight kiss"],["sulk","😤 Sulking"],["flowers","💐 Flowers"],["swing","🦇 Swing around the app"],["wildbed","🔥 Under the blanket"],["breakfast","🍳 Breakfast"],["dinner","🍽 Dinner"],["bath","🛁 Bath"],["sleep","🌙 Sleep"],["stand","🧍 Stand"]].map(([v,l])=>`<button class="chip" onclick="setPrev('scOv','${v}')">${l}</button>`).join("");
 let S={snd:1,me:null,moods:{},msg:null,look:{a:0,o:0,m:0,n:0,c:0,h:0,fx:-1}};
 try{Object.assign(S,JSON.parse(localStorage.getItem("mn")||"{}"))}catch(e){}
-S.look=Object.assign({a:0,o:0,m:0,n:0,c:0,h:0,fx:-1},S.look);S.mood=Object.assign({m:"ok",n:"ok"},S.mood);S.note=Object.assign({m:"",n:""},S.note);S.me="Ninu";S.scOv=S.wxOv="auto";
+S.look=Object.assign({a:0,o:0,m:0,n:0,c:0,h:0,fx:-1},S.look);S.mood=Object.assign({m:"ok",n:"ok"},S.mood);S.note=Object.assign({m:"",n:""},S.note);S.me="Ninu";S.scOv=S.scOv||"auto";S.wxOv="auto";
 const save=()=>{try{localStorage.setItem("mn",JSON.stringify(S))}catch(e){}try{sdiff()}catch(e){}};
 let HUE=140;
 const PRE=[["Original","💙",0,0,0,0,-1,"Our first look 💙"],["Royal Couple","👑",4,9,2,2,"✨","The king and queen of 13 June 👑"],["Cat Cafe","🐱",6,5,1,1,"🐾","Meow date at the cat cafe 🐱"],
@@ -567,7 +567,7 @@ function sceneTick(force){if(PZ&&!force)return;const k=curKind(),stg=$("stage");
   if(k!==skind){skind=k;if(k!=="stand")say(KIND_TXT[k]||k,3500)}
   document.body.classList.toggle("sleepmode",k==="sleep");
   document.body.classList.toggle("bedquake",k==="wildbed");
-  if(k==="stand"){stg.classList.remove("scened");document.body.classList.remove("bedquake");return}
+  if(k.slice(0,3)==="sc:"&&SCN[k.slice(3)]){const sk=k.slice(3),qs=Q;Q={k:sk,f:sfr,x:(qs.k===sk?qs.x:0),spd:1,depth:1,cum:0,spank:0,began:1,run:1};try{drawPlay()}catch(e){}Q=qs;const c0=$("scene"),pc0=$("pc");c0.width=pc0.width;c0.height=pc0.height;c0.getContext("2d").drawImage(pc0,0,0);stg.classList.add("scened");return}   if(k==="stand"){stg.classList.remove("scened");document.body.classList.remove("bedquake");return}
   const L=S.look,f=sfr,G=grid(44,28),A=spr(rowsFor()[0],ovFor()[0]),B=spr(rowsFor()[1],ovFor()[1]);
   if(k==="bath")bath(G,f,A,B);else if(k==="sleep")sleepS(G,f,A,B);else if(k==="kiss")kissS(G,f,A,B);else if(k==="cuddle")cuddleS(G,f,A,B);else if(k==="longkiss")longkissS(G,f,A,B);else if(k==="heartbeat")restS(G,f,A,B);else if(k==="movie")movieS(G,f,A,B);else if(k==="dance")danceS(G,f,A,B);else if(k==="goodnight")nightS(G,f,A,B);else if(k==="sulk")sulkS(G,f,A,B);else if(k==="flowers")flowerS(G,f,A,B);else if(k==="swing")swingS(G,f,A,B);else if(k==="wildbed")wildbedS(G,f);
   else{if(f%4===1)bite(A);if(f%4===3)bite(B);put(G,A,2,0,0,18);put(G,B,26,0,0,18);meal(G,k,f);
@@ -929,13 +929,13 @@ function setNote(){const w=SWHO||"m";S.note[w]=$("noteIn").value.slice(0,40);pus
 $("bMood").onclick=openMood;
 const _sL=setLook,_sP=setPrev,lookSub=()=>({...S.look});
 setLook=function(l,q,k){_sL(l,q,k);syncPut("look",{l:lookSub()})};
-setPrev=function(k,v){if(k==="scOv"&&v==="swing"&&!S.look.c){modalClose();say("Switch to Battu & Mewnu first (Characters) 🦇",3500);return}_sP(k,v);if(k==="scOv"||k==="wxOv")syncPut(k,{v})};
+setPrev=function(k,v){if(k==="scOv"&&v==="swing"&&!S.look.c){modalClose();say("Switch to Battu & Mewnu first (Characters) 🦇",3500);return}_sP(k,v);if(k==="scOv"||k==="wxOv")syncPut(k,{v});if(k==="scOv")save()};
 let SOFF=0;function syncPut(k,v){v.t=Date.now()+SOFF;SQ[k]=v;SLT[k]=v.t;SLS("q",JSON.stringify(SQ));SLS("lt",JSON.stringify(SLT));sflush()}
 async function sflush(){if(!SYNC_URL||!SUNL)return;if(!navigator.onLine){synUI("📴 offline · saved, will sync");return}const sent={...SQ};if(!Object.keys(sent).length)return spoll();
  try{const r=await fetch(SYNC_URL+"/s?room="+SROOM,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({d:sent})}),j=await r.json();if(j.now)SOFF=j.now-Date.now();for(const k in sent)if(SQ[k]&&SQ[k].t===sent[k].t)delete SQ[k];SLS("q",JSON.stringify(SQ));sapply(j.d);synUI("💞 synced")}catch(e){synUI("📴 offline · saved, will sync")}}
 async function spoll(){if(!SYNC_URL||!SUNL||!navigator.onLine||document.hidden)return;try{const r=await fetch(SYNC_URL+"/s?room="+SROOM),j=await r.json();if(j.now)SOFF=j.now-Date.now();sapply(j.d);seed(j.d);synUI("💞 synced")}catch(e){synUI("📴 offline · saved, will sync")}}
 function sapply(d){if(SFIRST){SFIRST=0;SLT={}}for(const k in d||{}){const v=d[k];if(!v||v.t<=(SLT[k]||0)||(SQ[k]&&SQ[k].t>=v.t))continue;SLT[k]=v.t;
-  if(k==="look")_sL(v.l);else if(k==="scOv")_sP("scOv",v.v);else if(k==="meet"){SLS("meet",v.v);tick()}else if(k==="outfits"){S.outfits=v.v||[];save()}else if(k==="swSpd"){S.swSpd=v.v;save();swLbl()}
+  if(k==="look")_sL(v.l);else if(k==="scOv"){_sP("scOv",v.v);save()}else if(k==="meet"){SLS("meet",v.v);tick()}else if(k==="outfits"){S.outfits=v.v||[];save()}else if(k==="swSpd"){S.swSpd=v.v;save();swLbl()}
   else if(k==="wxOv"){_sP("wxOv",v.v)}
   else if(k.slice(0,2)==="s_"){const f=k.slice(2);S[f]=v.v;SSNAP[f]=JSON.stringify(v.v);try{localStorage.setItem("mn",JSON.stringify(S))}catch(e){}try{renderSprites();heroUI()}catch(e){}}
   else if(k==="pm"||k==="pn"){const w=k[1];S.mood[w]=v.mood;S.note[w]=v.note||"";if(v.mood==="off")SKT=Date.now();save();moodUI();sceneTick(true)}
@@ -947,6 +947,40 @@ function sseed(d){d=d||{};for(const k in S){if(SKIPK[k]||S[k]===undefined)contin
 let SPT=0;function startSync(){if(!SYNC_URL){synUI("🔌 tap here to connect sync");$("syn").style.cursor="pointer";$("syn").onclick=()=>{const u=prompt("Paste your sync server URL (https://…workers.dev)","");if(u&&/^https?:\/\//.test(u.trim())){try{localStorage.setItem("syncurl",u.trim().replace(/\/+$/,""))}catch(e){}location.reload()}};return}
   if(SPT)return;sflush();SPT=setInterval(spoll,2500);addEventListener("online",sflush);addEventListener("focus",spoll);document.addEventListener("visibilitychange",()=>{if(!document.hidden)spoll()})}
 SUNL=SLS("unl")===PH&&!!SLS("room");if(SUNL)SROOM=SLS("room");SWHO=SLS("who");gstage();
+
+/* ---- v2: shared scenes + saved scenes ---- */
+try{
+let SCNT=0,SCNREM=0;
+if(!Array.isArray(S.favScn))S.favScn=[];
+const scnPut=()=>{if(SCNREM||!SUNL)return;syncPut("scn",{by:SWHO,v:{k:Q.k||null,b:Q.began?1:0,r:Q.run?1:0,x:Q.x||0,spd:Q.spd||1,depth:Q.depth||1,cum:Q.cum||0,spank:Q.spank||0}})};
+const pb=document.querySelector("#play .pb");
+const sv=document.createElement("button");sv.className="btn";sv.id="pSave";sv.textContent="\uD83D\uDCBE Save";
+if(pb)pb.insertBefore(sv,$("pExit"));
+const svUI=()=>{sv.textContent=(S.favScn||[]).indexOf(Q.k)>-1?"\u2705 Saved":"\uD83D\uDCBE Save"};
+sv.onclick=()=>{if(!Q.k)return;const a=S.favScn||(S.favScn=[]),i=a.indexOf(Q.k);if(i>-1)a.splice(i,1);else a.push(Q.k);S.favScn=a.slice();save();svUI();$("pbub").textContent=i>-1?"Removed from saved":"Saved \u2705 find it in Scenes"};
+const _oS=openScene;
+openScene=function(k){_oS(k);svUI();scnPut()};
+["pStart","pPause","pResume","pExit","pExtra","sxFast","sxSlow","sxDeep","sxHard","sxCum"].forEach(id=>{const el=$(id);if(!el||!el.onclick)return;const f=el.onclick;el.onclick=function(){const r=f.apply(this,arguments);scnPut();return r}});
+const _sa=sapply;
+sapply=function(d){_sa(d);try{const v=d&&d.scn;if(!v||!(v.t>SCNT))return;SCNT=v.t;if(v.by===SWHO)return;const age=Date.now()+SOFF-v.t,s=v.v||{};if(age>120000)return;
+SCNREM=1;try{
+if(!s.k){if(Q.k)$("pExit").onclick()}
+else{const was=Q.began&&Q.k===s.k;if(Q.k!==s.k)openScene(s.k);
+Object.assign(Q,{began:s.b?1:0,run:s.r?1:0,x:s.x||0,spd:s.spd||1,depth:s.depth||1,cum:s.cum||0,spank:s.spank||0});
+ctl();svUI();
+if(s.b&&!was&&$("pbub"))$("pbub").textContent=pick(SCN[s.k].l);
+if(!was)say(NM()[v.by==="m"?0:1]+" opened "+SCN[s.k].n+" \uD83D\uDC9E tap \uD83D\uDCBE Save to keep it",5000)}
+}finally{SCNREM=0}}catch(e){}};
+const _mb=$("bMom").onclick;
+$("bMom").onclick=function(){_mb.apply(this,arguments);try{const a=(S.favScn||[]).filter(k=>SCN[k]);if(a.length)$("card").insertAdjacentHTML("beforeend","<h4>\uD83D\uDCBE Saved scenes</h4>"+a.map(k=>`<button class="chip" onclick="openScene('${k}')">${SCN[k].i} ${SCN[k].n}</button>`).join(""))}catch(e){}};
+}catch(e){try{console.error("v2 patch",e)}catch(_){}}
+
+try{
+for(const k in SCN){KIND_TXT["sc:"+k]=SCN[k].i+" "+SCN[k].n;SC_LINES["sc:"+k]=SCN[k].l}
+const _mb2=$("bMom").onclick;
+$("bMom").onclick=function(){_mb2.apply(this,arguments);try{$("card").insertAdjacentHTML("beforeend","<h4>\uD83C\uDFAC All scenes as ambient moments</h4><small>Shows on the main screen for both of you</small><br>"+Object.keys(SCN).map(k=>`<button class="chip" onclick="setPrev('scOv','sc:${k}')">${SCN[k].i} ${SCN[k].n}</button>`).join(""))}catch(e){}};
+try{ctlUI()}catch(e){}
+}catch(e){try{console.error("v2b patch",e)}catch(_){}}
 try{if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
 </script>
 </body>
