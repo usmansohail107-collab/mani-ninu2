@@ -105,7 +105,7 @@ body.bedquake .cards,body.bedquake .tiles,body.bedquake .dock,body.bedquake .top
 #gate{position:fixed;inset:0;z-index:99999;background:#0b0618;display:flex;align-items:center;justify-content:center;color:#fff;font-family:Outfit,sans-serif}body.in #gate{display:none}
 #gbox{display:flex;flex-direction:column;gap:12px;align-items:center;text-align:center;width:min(80vw,300px)}#gbox .gh{font-size:46px}
 #gbox input{width:100%;padding:13px;border-radius:14px;border:1px solid #fff3;background:#ffffff14;color:#fff;font-size:16px;text-align:center}#gbox button{padding:12px 26px;border-radius:30px;border:0;background:#ff9ccf;color:#2b2140;font-weight:600;font-size:15px}#gerr{font-size:13px;min-height:16px;color:#ffb3b3}
-.note{font-size:10.5px;color:var(--sub);margin-top:6px;min-height:13px;word-break:break-word;opacity:.9}#syn{font-size:10px;opacity:.65;margin-top:4px;text-align:center}.chip.on{outline:2px solid #fff8}
+.note{display:none!important}#syn{font-size:10px;opacity:.65;margin-top:4px;text-align:center}.chip.on{outline:2px solid #fff8}
 .em{width:1.2em;height:1.2em;vertical-align:-.25em;display:inline-block}.fx .em{width:1em;height:1em;vertical-align:0}
 .dock{flex-wrap:wrap;justify-content:center;gap:6px;padding:0 10px;max-width:100%}.dock .btn{padding:10px 11px;letter-spacing:.03em;font-size:11px}
 </style>
@@ -226,7 +226,19 @@ const ACC=[["–","🚫",[]],["Cat ears","🐱",[[0,"...c........c..."],[1,"...c
 ["Party","🥳",[[-3,".......y........"],[-2,"......ryr......."],[-1,".....rgyrg......"],[0,"....gyrgyrgy...."]]],
 ["Headphones","🎧",[[0,"...hhhhhhhhhh..."],[3,"..h..........h.."],[4,".gg..........gg."],[5,".gg..........gg."],[6,"..h..........h.."]]],
 ["Alien","👽",[[-3,"....y......y...."],[-2,"....g......g...."],[-1,".....g....g....."]]],
-["Cowboy","🤠",[[-1,"......nnnn......"],[0,".nnnnnnnnnnnnnn."]]],["Sprout","🌱",[[-2,"......g.g......."],[-1,".......gg......."]]]];
+["Cowboy","🤠",[[-1,"......nnnn......"],[0,".nnnnnnnnnnnnnn."]]],["Sprout","🌱",[[-2,"......g.g......."],[-1,".......gg......."]]],
+["Devil horns","😈",[[-1,"..r..........r.."],[0,"..rr........rr.."]]],
+["Angel wings","🪽",[[10,"w..............w"],[11,"ww............ww"],[12,".ww..........ww."],[13,"..ww........ww.."]]],
+["Sunglasses","🕶️",[[6,"...bbbbbbbbbb..."],[7,"...b........b..."]]],
+["Tiara","💎",[[0,"....y.y.y.y.y..."],[1,"...yyyyyyyyyyy.."]]],
+["Beret","🎨",[[-1,"....rrrrrrrr...."],[0,"...rrrrrrrrrr..."]]],
+["Beanie","🧢",[[-1,"....hhhhhhhh...."],[0,"...hhhhhhhhhh..."],[1,"...hhhhhhhhhh..."]]],
+["Flower crown","🌺",[[0,"..o.y.o.y.o.y.o."],[1,"...o.y.o.y.o.y.."]]],
+["Mask","🎭",[[5,"...bbbbbbbbbb..."],[6,"...b.bb..bb.b..."],[7,"...bbbbbbbbbb..."]]],
+["Bow","🎀",[[0,"...rr....rr....."],[1,"....rrrrrr......"],[2,".....rrrr......."]]],
+["Antenna","📡",[[-3,"......y....y...."],[-2,"......g....g...."],[-1,".......g..g....."]]],
+["Bandana","🚩",[[3,"...rrrrrrrrrr..."],[4,"...r........r..."]]]
+];
 draw("cat",CAT,{a:"#e8a25c",d:"#3a2a2a"},12,4);
 
 /* ---- saved state ---- */
@@ -245,11 +257,20 @@ const SUITS=[
 {n:"Gold",mb:"#d9a62e",mp:"#8a6a1c",mv:"#6b5214",mc:"#4d3a0d",nb:"#f0c24a",np:"#a07b22",nv:"#7e611a",nc:"#5a4510",boot:"#3a2c0a"},
 {n:"Ice",mb:"#8fc4e8",mp:"#4c7fa3",mv:"#3b6a8c",mc:"#2c5473",nb:"#b5dcf2",np:"#6ba0c4",nv:"#527fa2",nc:"#3f6584",boot:"#27455c"},
 {n:"Sunset",mb:"#e06a2c",mp:"#8f3d14",mv:"#7a3210",mc:"#5a230a",nb:"#f08a3c",np:"#a84c1c",nv:"#8f3c14",nc:"#6a2a0c",boot:"#3a1606"},
-{n:"Silver",mb:"#a9afbb",mp:"#6b717e",mv:"#4e5461",mc:"#383d49",nb:"#c9ced8",np:"#838997",nv:"#646a78",nc:"#474c58",boot:"#2b2e37"}];
+{n:"Silver",mb:"#a9afbb",mp:"#6b717e",mv:"#4e5461",mc:"#383d49",nb:"#c9ced8",np:"#838997",nv:"#646a78",nc:"#474c58",boot:"#2b2e37"},
+{n:"Rose Gold",mb:"#c47a6a",mp:"#8a4a40",mv:"#6e3a32",mc:"#4a2820",nb:"#e09a8a",np:"#a05a50",nv:"#8a4a42",nc:"#5a3028",boot:"#3a2018"},
+{n:"Violet",mb:"#6a3a9a",mp:"#3a1a5a",mv:"#2e1450",mc:"#1e0e38",nb:"#8a5aba",np:"#4a2a6a",nv:"#3e2060",nc:"#2a1848",boot:"#180e28"},
+{n:"Teal",mb:"#1a8a8a",mp:"#0e5a5a",mv:"#0a4a4a",mc:"#063838",nb:"#2aaaaa",np:"#168080",nv:"#126868",nc:"#0c4848",boot:"#082828"},
+{n:"Blood",mb:"#6a1018",mp:"#3a080c",mv:"#2e060a",mc:"#1e0406",nb:"#8a1820",np:"#4a0c10",nv:"#3e0a0e",nc:"#2a0608",boot:"#140304"},
+{n:"Neon Pink",mb:"#ff3d8a",mp:"#a02050",mv:"#801840",mc:"#501028",nb:"#ff6ab0",np:"#c03060",nv:"#a02850",nc:"#701838",boot:"#300c18"},
+{n:"Forest",mb:"#1a4a28",mp:"#0e2e18",mv:"#0a2414",mc:"#06180e",nb:"#2a6a38",np:"#163e20",nv:"#12341c",nc:"#0c2414",boot:"#06140a"},
+{n:"Ocean",mb:"#1a4a8a",mp:"#0e2e5a",mv:"#0a2450",mc:"#061838",nb:"#2a6aba",np:"#163e70",nv:"#123460",nc:"#0c2448",boot:"#061428"},
+{n:"Lavender",mb:"#9a7aca",mp:"#5a4a7a",mv:"#4a3a6a",mc:"#3a2a5a",nb:"#ba9aea",np:"#7a6a9a",nv:"#6a5a8a",nc:"#4a3a6a",boot:"#2a1a4a"},
+{n:"Amber",mb:"#c88a2a",mp:"#7a5214",mv:"#6a4610",mc:"#4a320c",nb:"#e0a83a",np:"#9a6a1c",nv:"#8a5a18",nc:"#5a3a10",boot:"#3a2808"}];
 const isLing=()=>!S.look.c&&(S.look.o===10||S.look.o===11);
 const isNude=()=>!S.look.c&&S.look.o===12;
 const rowsFor=()=>S.look.c?[HM,HN]:isNude()?[MANI_NUDE,NINU_NUDE]:isLing()?[MANI_LING,NINU_LING]:[MANI,NINU];
-const ovFor=()=>S.look.c?[HOV_M,HOV_N]:[ACC[S.look.m][2],ACC[S.look.n][2]];
+let ovFor=()=>S.look.c?[HOV_M,HOV_N]:[ACC[S.look.m][2],ACC[S.look.n][2]];
 function palBase(){const L=S.look;if(L.c){const h=SUITS[L.h];return{...PAL,...ACCP,W:h.boot,H:h.boot,O:h.boot,B:h.mb,G:h.mp,D:h.nb,L:h.np,V:h.mv,C:h.mc,X:h.nv,Z:h.nc}}return{...PAL,...OUT[L.o].m,...OUT[L.o].k,...ACCP}}
 const NM=()=>S.look.c?["Battu","Mewnu"]:["Mani","Ninu"];
 const HM_LINES=["Mewnu, rooftop date? 🦇💗","Gotham sleeps, I only watch you","Cape on, heart open 💜","Mewnu, you're my only weakness"];
@@ -283,7 +304,7 @@ const PRE=[["Original","💙",0,0,0,0,-1,"Our first look 💙"],["Royal Couple",
 function renderSprites(){const r=rowsFor(),o=ovFor(),p=palFor();draw("mani",r[0],p,16,8,4,o[0]);draw("ninu",r[1],p,16,8,4,o[1])}
 function setFx(){}
 function setLook(l,q,keep){if(typeof sceneTick==="function")setTimeout(()=>sceneTick(true),0);Object.assign(S.look,l);HUE=AUR[S.look.a][1];renderSprites();heroUI();setFx(S.look.fx);save();if(q){say(q,3500);ping();burst("✨",6,$("stage"))}if(keep)openSkins(true)}
-function saveSlot(){S.slots=S.slots||[];S.slots.push({...S.look});if(S.slots.length>8)S.slots.shift();save();say("Look saved 💾",2000);openSkins(true)}
+function saveSlot(){S.slots=S.slots||[];S.slots.push({...S.look});if(S.slots.length>40)S.slots.shift();save();say("Look saved 💾",2000);openSkins(true)}
 function loadSlot(i){Object.assign(S.look,S.slots[i]);setLook({});modalClose();say("Look loaded 💙",2000)}
 function openSkins(keep){const k=S.look,sc=keep?$("card").scrollTop:0;
   const pre=PRE.map((p,i)=>`<button class="chip${k.fx===i||(i===0&&k.fx<0&&k.a===0&&k.o===0&&!k.m&&!k.n)?" on":""}" onclick="modalClose();setLook({a:${p[2]},o:${p[3]},m:${p[4]},n:${p[5]},fx:${i===0?-1:i}},'${p[7]}')">${p[1]} ${p[0]}</button>`).join("");
@@ -630,21 +651,35 @@ pussy:{n:"Eating Her 🔥",i:"👅",b:"Lick",l:["Taste me… 🔥","Right there 
 makeout:{n:"Making Out 🔥",i:"💋",b:"Kiss deeper",l:["Kiss me 💋","Don't pull away 💗","I can feel you hard 🔥","Bite my lip 🥵","Closer… 💙"]},
 breasts:{n:"Sucking Her Breasts 🔥",i:"💗",b:"Suck",l:["Harder… 🔥","Bite a little 💗","That feels so good 🥵","Don't stop 💦","I'm melting 💙"]},
 bdsm:{n:"Tied Up 🔥",i:"⛓️",b:"Harder",l:["I can't move… 🔥","Use me 💗","Tighter… 🥵","I'm yours like this 💦","Fuck me while I'm tied 💙","Come inside me 💦"]},
-spank:{n:"Spanking 🔥",i:"👋",b:"Spank",l:["Ah—! 🔥","Harder… 💗","My ass is stinging 🥵","Don't stop 💦","I'm yours 💙","Again… please 🔥"]}};
+spank:{n:"Spanking 🔥",i:"👋",b:"Spank",l:["Ah—! 🔥","Harder… 💗","My ass is stinging 🥵","Don't stop 💦","I'm yours 💙","Again… please 🔥"]},
+side:{n:"Spooning Sex 🔥",i:"🥄",b:"Grind",l:["From behind, slow… 🔥","Hold me tight 💗","I can feel every inch 🥵","Stay deep 💦","Whisper in my ear 💙","Cum while you hold me 💦"]},
+lap:{n:"Lap Dance 🔥",i:"💃",b:"Grind harder",l:["Sit on me 🔥","Feel how hard you make me 💗","Grind right there 🥵","You're so wet 💦","Take me inside 💙","Ride until I fill you 💦"]},
+shower:{n:"In the Shower 🔥",i:"🚿",b:"Against glass",l:["Hot water and you 🔥","Press me to the wall 💗","Soap everywhere 🥵","Don't slip… hold tighter 💦","Cum with the water running 💙"]},
+sofa:{n:"On the Sofa 🔥",i:"🛋️",b:"Bend over",l:["Bend over the arm 🔥","Take me from behind 💗","The couch is shaking 🥵","Harder… yes 💦","Don't stop until you fill me 💙"]},
+desk:{n:"Against the Desk 🔥",i:"🖥️",b:"Bend me",l:["Clear the desk 🔥","Take me right here 💗","Papers everywhere 🥵","Hold my waist 💦","Cum on the desk 💙"]},
+car:{n:"In the Car 🔥",i:"🚗",b:"Climb over",l:["Back seat only for us 🔥","Climb on top 💗","Windows fogged 🥵","Quiet… someone might hear 💦","Fill me before we leave 💙"]},
+mirror:{n:"In Front of Mirror 🔥",i:"🪞",b:"Watch us",l:["Watch yourself take me 🔥","Look how deep I am 💗","Don't look away 🥵","See how wet you are 💦","Cum while we watch 💙"]},
+kneel:{n:"On Her Knees 🔥",i:"🙇",b:"Deeper",l:["On your knees for me 🔥","Open wide 💗","Take it all the way 🥵","Good girl… 💦","Swallow every drop 💙"]},
+prone:{n:"Prone Bone 🔥",i:"🛏️",b:"Pin me",l:["Lie flat… 🔥","Pin me down 💗","So deep like this 🥵","I can't move 💦","Breed me into the mattress 💙"]},
+lotus:{n:"Lotus Position 🔥",i:"🪷",b:"Rock",l:["Legs around you 🔥","So close… face to face 💗","Rock with me 🥵","I feel everything 💦","Cum while we hold each other 💙"]}};
 const BG={hug:["#3b2a63","#e86fb0"],bed:["#3a2018","#d98a5a"],kiss:["#1d1440","#e86fb0"],blanket:["#0b1030","#2a3f8f"],cozy:["#2a1710","#b4673c"],sleep:["#050a1c","#1c2f66"],outfit:["#12303a","#2fae9a"],
 blanketsex:["#2a1020","#c05080"],bedsex:["#3a1828","#e07090"],missionary:["#2a1428","#d06090"],doggy:["#1a1020","#b04070"],cowgirl:["#301828","#e080a0"],
 wild:["#1a0810","#a03060"],oral:["#201018","#c05080"],standing:["#181028","#8040a0"],"69":["#201020","#b04080"],creampie:["#2a1020","#e06090"],
-pussy:["#2a1020","#c06090"],makeout:["#1d1440","#e86fb0"],breasts:["#301828","#e080a0"],bdsm:["#1a0a18","#6a2040"],spank:["#2a1810","#c06050"]};
+pussy:["#2a1020","#c06090"],makeout:["#1d1440","#e86fb0"],breasts:["#301828","#e080a0"],bdsm:["#1a0a18","#6a2040"],spank:["#2a1810","#c06050"],
+side:["#2a1828","#c07090"],lap:["#301828","#e080a0"],shower:["#0a2030","#4a90c0"],sofa:["#2a1810","#c07060"],desk:["#1a2030","#6070a0"],
+car:["#101828","#405070"],mirror:["#201028","#a06090"],kneel:["#201018","#c05080"],prone:["#2a1420","#d06080"],lotus:["#2a1828","#e090b0"]};
 const LT={hug:"255,170,215",bed:"255,205,130",kiss:"255,130,190",blanket:"150,175,255",cozy:"255,185,95",sleep:"130,160,255",outfit:"200,255,240",
 blanketsex:"255,120,180",bedsex:"255,140,190",missionary:"255,130,200",doggy:"255,100,160",cowgirl:"255,150,200",
 wild:"255,80,140",oral:"255,140,200",standing:"220,120,255","69":"255,100,180",creampie:"255,160,210",
-pussy:"255,140,200",makeout:"255,130,190",breasts:"255,150,200",bdsm:"200,80,140",spank:"255,120,100"},PULSE=["hug","kiss","bed","outfit","blanketsex","bedsex","missionary","doggy","cowgirl","wild","oral","standing","69","creampie","pussy","makeout","breasts","bdsm","spank"];
+pussy:"255,140,200",makeout:"255,130,190",breasts:"255,150,200",bdsm:"200,80,140",spank:"255,120,100",
+side:"255,140,190",lap:"255,150,200",shower:"140,200,255",sofa:"255,160,140",desk:"180,190,255",
+car:"160,180,220",mirror:"255,140,200",kneel:"255,140,200",prone:"255,130,180",lotus:"255,160,210"},PULSE=["hug","kiss","bed","outfit","blanketsex","bedsex","missionary","doggy","cowgirl","wild","oral","standing","69","creampie","pussy","makeout","breasts","bdsm","spank","side","lap","shower","sofa","desk","car","mirror","kneel","prone","lotus"];
 let Q={k:null};
 function hr(G,f,n){for(let i=0;i<n;i++)heart(G,13+(i*7)%16,8-((f+i*3)%8))}
 function blk(G,f,top,amp){for(let x=2;x<42;x++){const y=top-Math.round(amp*Math.sin(f/4+x/5))-(Math.abs(x-14)<6||Math.abs(x-30)<6?1:0);for(let yy=y;yy<26;yy++)G[yy][x]=yy===y?"s":(x+yy)%6===0?"i":"q"}}
 function sexBed(G,f,amp){rect(G,0,24,44,4,"u");rect(G,1,23,42,1,"x");const shake=Math.round(Math.sin(f*2.2)*amp+Math.sin(f*3.1)*amp*.45);rect(G,2+shake,18,40,6,"p");for(let x=4;x<40;x+=3)px(G,x+shake,19,"s");if(amp>4){rect(G,1+Math.round(shake*.6),17,42,1,"x");for(let i=0;i<3;i++)px(G,8+i*10+(shake|0),22,"s")}}
 function drip(G,x,y,f){/* cum / wet drops — thicker finish */[[0,0],[1,1],[-1,2],[0,3],[2,2],[-2,1],[1,4],[-1,5],[0,6]].forEach(([dx,dy],i)=>{if((f+i)%3<2)px(G,x+dx,y+dy,"s")})}
-function drawPlay(){const k=Q.k,f=Q.f,G=grid(44,28),SEX=new Set(["blanketsex","bedsex","missionary","doggy","cowgirl","wild","oral","standing","69","creampie","pussy","makeout","breasts","bdsm","spank"]),nude=SEX.has(k),A=spr(nude?MANI_NUDE:rowsFor()[0],nude?[]:ovFor()[0]),B=spr(nude?NINU_NUDE:rowsFor()[1],nude?[]:ovFor()[1]),c=$("pc"),x=c.getContext("2d"),pal={...palFor(),...SCP,...PAL,C:"#e8a090",P:"#c47a6a",Z:"#b06050",Y:"#f0c0b0"};c.width=352;c.height=224;
+function drawPlay(){const k=Q.k,f=Q.f,G=grid(44,28),SEX=new Set(["blanketsex","bedsex","missionary","doggy","cowgirl","wild","oral","standing","69","creampie","pussy","makeout","breasts","bdsm","spank","side","lap","shower","sofa","desk","car","mirror","kneel","prone","lotus"]),nude=SEX.has(k),A=spr(nude?MANI_NUDE:rowsFor()[0],nude?[]:ovFor()[0]),B=spr(nude?NINU_NUDE:rowsFor()[1],nude?[]:ovFor()[1]),c=$("pc"),x=c.getContext("2d"),pal={...palFor(),...SCP,...PAL,C:"#e8a090",P:"#c47a6a",Z:"#b06050",Y:"#f0c0b0"};c.width=352;c.height=224;
  if(k==="hug"){const d=Q.x>0?1:3,sw=Math.round(Math.sin(f/3));shut(A);shut(B);rect(G,0,26,44,2,"u");put(G,A,12-d+sw,0,0,27);put(G,B,16+d+sw,0,0,27);hr(G,f,Q.x>0?6:3)}
  else if(k==="kiss"){kissS(G,f,A,B);if(Q.x>0)hr(G,f,6)}
  else if(k==="bed"||k==="blanket"){const bl=k==="blanket";if(bl){shut(A);shut(B)}else if(f%16===0)shut(B);rect(G,2,2,40,24,"u");rect(G,6,14,32,4,"p");put(G,A,8,3,0,13);put(G,B,20,3,0,13);blk(G,f,bl?(Q.x?15:17):19,bl?.6:.9);rect(G,0,26,44,2,"u");if(!bl)hr(G,f,Q.x>0?5:2)}
@@ -859,6 +894,68 @@ function drawPlay(){const k=Q.k,f=Q.f,G=grid(44,28),SEX=new Set(["blanketsex","b
   if(bruise>5){px(G,35,2,"s");px(G,36,3,"s")}
   if(bruise>8){px(G,34,1,"s");px(G,37,4,"s")}
 }
+ else if(k==="side"){shut(A);shut(B);const amp=(Q.x>0?4:1.5)*(Q.spd||1),sh=Math.round(Math.sin(f*(2+Q.spd))*amp);
+  rect(G,0,24,44,4,"u");rect(G,2,17,40,8,"p");
+  put(G,A,6+sh,2,0,18);put(G,B,12+Math.round(sh*.6),1,0,18);
+  px(G,13+sh,14,"C");px(G,14+sh,14,"Z");px(G,13+sh,15,"Z");
+  if(Q.x>0)drip(G,14,17,f);
+  [[20,4],[15,2],[26,3]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(90,.08,.04)}
+ else if(k==="lap"){shut(A);shut(B);const amp=(Q.x>0?5:1.8)*(Q.spd||1),sh=Math.round(Math.sin(f*(2.2+Q.spd))*amp);
+  rect(G,0,24,44,4,"u");rect(G,8,14,28,11,"p");
+  put(G,A,10,3,0,18);put(G,B,12,1+sh,0,17);
+  px(G,15,13,"C");px(G,16,13,"Z");px(G,15,14,"Z");
+  if(Q.x>0)drip(G,16,16,f);
+  [[18,3],[12,1],[24,2]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(110,.07,.04)}
+ else if(k==="shower"){shut(A);shut(B);const amp=(Q.x>0?4.5:1.6)*(Q.spd||1),sh=Math.round(Math.sin(f*(2.4+Q.spd))*amp);
+  for(let i=0;i<44;i+=2){px(G,i,(f+i)%8,"s");px(G,i+1,(f+i*2)%10,"s")}
+  rect(G,0,24,44,4,"u");
+  put(G,A,8+sh,1,0,19);put(G,B,14-Math.round(sh*.4),2,0,18);
+  px(G,14+sh,14,"C");px(G,15+sh,14,"Z");px(G,14+sh,15,"Z");
+  if(Q.x>0){drip(G,15,17,f);drip(G,17,18,f+1)}
+  [[20,5],[14,2],[26,4]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%3===0)tone(100,.06,.03)}
+ else if(k==="sofa"){shut(A);shut(B);const amp=(Q.x>0?5:1.8)*(Q.spd||1),sh=Math.round(Math.sin(f*(2.5+Q.spd))*amp);
+  rect(G,0,22,44,6,"u");rect(G,2,12,40,11,"p");rect(G,0,8,6,16,"p");rect(G,38,8,6,16,"p");
+  put(G,B,6,4,0,16);put(G,A,12+sh,2,0,18);
+  px(G,12+sh,14,"C");px(G,13+sh,14,"Z");px(G,12+sh,15,"Z");
+  if(Q.x>0)drip(G,13,17,f);
+  [[20,3],[15,1],[26,2]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(95,.08,.05)}
+ else if(k==="desk"){shut(A);shut(B);const amp=(Q.x>0?5:1.8)*(Q.spd||1),sh=Math.round(Math.sin(f*(2.6+Q.spd))*amp);
+  rect(G,0,16,44,3,"u");rect(G,0,19,44,9,"3");
+  put(G,B,8,0,0,16);put(G,A,14+sh,0,0,17);
+  px(G,14+sh,13,"C");px(G,15+sh,13,"Z");px(G,14+sh,14,"Z");
+  if(Q.x>0)drip(G,15,16,f);
+  [[20,2],[14,0],[26,1]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(100,.08,.05)}
+ else if(k==="car"){shut(A);shut(B);const amp=(Q.x>0?4:1.5)*(Q.spd||1),sh=Math.round(Math.sin(f*(2.2+Q.spd))*amp);
+  rect(G,2,6,40,18,"3");rect(G,4,8,36,12,"d");rect(G,0,22,44,6,"u");
+  put(G,A,8,4,0,16);put(G,B,12,2+sh,0,15);
+  px(G,14,12,"C");px(G,15,12,"Z");px(G,14,13,"Z");
+  if(Q.x>0)drip(G,15,15,f);
+  [[18,3],[12,1],[24,2]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(105,.07,.04)}
+ else if(k==="mirror"){shut(A);shut(B);const amp=(Q.x>0?4.5:1.6)*(Q.spd||1),sh=Math.round(Math.sin(f*(2.3+Q.spd))*amp);
+  rect(G,30,2,12,18,"s");rect(G,31,3,10,16,"d");
+  rect(G,0,24,44,4,"u");rect(G,2,17,28,8,"p");
+  put(G,A,6+sh,1,0,18);put(G,B,12,2,0,18);
+  px(G,13+sh,14,"C");px(G,14+sh,14,"Z");px(G,13+sh,15,"Z");
+  if(Q.x>0)drip(G,14,17,f);
+  [[18,4],[12,2],[22,3]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(95,.08,.04)}
+ else if(k==="kneel"){shut(A);shut(B);const amp=(Q.x>0?3:1)*(Q.spd||1),sh=Math.round(Math.sin(f*(2+Q.spd))*amp);
+  rect(G,0,24,44,4,"u");
+  put(G,A,10,0,0,18);put(G,B,12,8+sh,0,16);
+  px(G,14,12,"C");px(G,15,12,"Z");px(G,14,13,"Y");px(G,15,13,"Y");
+  if(Q.x>0||Q.cum){drip(G,14,14,f);drip(G,16,15,f+1)}
+  [[20,3],[14,1],[26,2]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(120,.06,.03)}
+ else if(k==="prone"){shut(A);shut(B);const amp=(Q.x>0?5.5:2)*(Q.spd||1),sh=Math.round(Math.sin(f*(2.8+Q.spd))*amp);
+  rect(G,0,24,44,4,"u");rect(G,2,18,40,7,"p");
+  put(G,B,6,4,0,16);put(G,A,10+sh,1,0,18);
+  px(G,12+sh,14,"C");px(G,13+sh,14,"Z");px(G,12+sh,15,"Z");px(G,13+sh,15,"Z");
+  if(Q.x>0){drip(G,13,17,f);drip(G,15,18,f+1)}
+  [[20,3],[14,1],[26,2]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(85,.1,.06)}
+ else if(k==="lotus"){shut(A);shut(B);const amp=(Q.x>0?3.5:1.2)*(Q.spd||1),sh=Math.round(Math.sin(f*(1.8+Q.spd))*amp);
+  rect(G,0,24,44,4,"u");rect(G,6,16,32,9,"p");
+  put(G,A,10,2,0,18);put(G,B,12,1+sh,0,17);
+  px(G,15,13,"C");px(G,16,13,"Z");px(G,15,14,"Z");
+  if(Q.x>0)drip(G,16,16,f);
+  [[18,3],[12,1],[24,2],[20,0]].forEach(([x,y],i)=>heart(G,x,y-((f+i)%5)));if(f%2===0)tone(100,.07,.04)}
 
   /* finish drawPlay frame */
   const g=x.createLinearGradient(0,0,0,224);g.addColorStop(0,(BG[k]||["#1a1020","#c05080"])[0]);g.addColorStop(1,(BG[k]||["#1a1020","#c05080"])[1]);x.fillStyle=g;x.fillRect(0,0,352,224);
@@ -867,7 +964,7 @@ function drawPlay(){const k=Q.k,f=Q.f,G=grid(44,28),SEX=new Set(["blanketsex","b
   const cz=k==="cozy",a=cz?(Q.x?.05:.36+.04*Math.sin(f)):.26,cx=cz?290:176,cy=cz?130:80,lt=(LT[k]||"255,140,180"),r=x.createRadialGradient(cx,cy,10,cx,cy,230);r.addColorStop(0,`rgba(${lt},${a})`);r.addColorStop(1,`rgba(${lt},0)`);x.fillStyle=r;x.fillRect(0,0,352,224);
   if(k==="sleep"&&!Q.x){x.fillStyle="rgba(2,6,20,.38)";x.fillRect(0,0,352,224)}
   const v=x.createRadialGradient(176,112,90,176,112,240);v.addColorStop(0,"rgba(0,0,0,0)");v.addColorStop(1,"rgba(0,0,0,.5)");x.fillStyle=v;x.fillRect(0,0,352,224)}
-function isSexK(k){return["blanketsex","bedsex","missionary","doggy","cowgirl","wild","oral","standing","69","creampie","pussy","makeout","breasts","bdsm","spank"].includes(k)}
+function isSexK(k){return["blanketsex","bedsex","missionary","doggy","cowgirl","wild","oral","standing","69","creampie","pussy","makeout","breasts","bdsm","spank","side","lap","shower","sofa","desk","car","mirror","kneel","prone","lotus"].includes(k)}
 function ctl(){const b=!!Q.began,r=!!Q.run;$("pStart").style.display=b?"none":"";$("pPause").style.display=b&&r?"":"none";$("pResume").style.display=b&&!r?"":"none";
   const sex=isSexK(Q.k);if($("psex"))$("psex").style.display=sex&&b?"":"none";if($("pExtra"))$("pExtra").style.display=sex?"none":(b&&Q.k!=="outfit"?"":"none")}
 function openScene(k){modalClose();Q={k,f:0,x:0,spd:1,depth:1,cum:0,spank:0};$("play").classList.add("on");$("ptitle").textContent=SCN[k].i+" "+SCN[k].n;$("pExtra").textContent=SCN[k].b||"Go";$("pbub").textContent="Press Start";ctl();$("pextra").style.display=k==="outfit"?"block":"none";if($("psex"))$("psex").style.display="none";if(k==="outfit")panel()}
@@ -921,11 +1018,11 @@ function gstage(){const g=$("gbox");if(!SUNL){g.innerHTML='<div class="gh">🔒<
 function tryCode(){const c=$("gc").value.trim().toLowerCase();if(String(scy(c))===PH){SUNL=1;SROOM=scy(c,1).toString(36)+scy(c,2).toString(36);SLS("unl",PH);SLS("room",SROOM);gstage()}else $("gerr").textContent="Wrong code 🙈"}
 function pickWho(w){SWHO=w;SLS("who",w);gstage()}
 function moods(){return[["ok","😊","Happy"],["love","🥰","Loved"],["sleepy","😴","Sleepy"],["sad","😔","Sad"],["off","😤","Mood off"]]}
-function moodUI(){const E=Object.fromEntries(moods().map(m=>[m[0],m[1]]));["m","n"].forEach((w,i)=>{const c=$(i?"cn":"cm");if(!c)return;c.querySelector(".who").innerHTML=emoHTML(NM()[i]+" "+(E[(S.mood||{})[w]]||""));let n=c.querySelector(".note");if(!n){n=document.createElement("div");n.className="note";c.appendChild(n)}n.textContent=(S.note||{})[w]||""})}
-function openMood(){const w=SWHO||"m",cur=S.mood[w];modal("How are you feeling? 💭",moods().map(([k,e,l])=>`<button class="chip${cur===k?" on":""}" onclick="setMood('${k}')">${e} ${l}</button>`).join("")+`<br><input id="noteIn" maxlength="40" placeholder="small note (40 letters)" value="${(S.note[w]||"").replace(/"/g,"&quot;")}" style="width:100%;padding:10px;border-radius:12px;border:1px solid #fff3;background:#0003;color:#fff;margin:12px 0"><br><button onclick="setNote()">Save note</button> <button class="alt" onclick="hugNow();modalClose()">Send a hug 🤗</button>`)}
+function moodUI(){const E=Object.fromEntries(moods().map(m=>[m[0],m[1]]));["m","n"].forEach((w,i)=>{const c=$(i?"cn":"cm");if(!c)return;c.querySelector(".who").innerHTML=emoHTML(NM()[i]+" "+(E[(S.mood||{})[w]]||""));let n=c.querySelector(".note");if(n){n.textContent="";n.style.display="none"}})}
+function openMood(){const w=SWHO||"m",cur=S.mood[w];modal("How are you feeling? 💭",moods().map(([k,e,l])=>`<button class="chip${cur===k?" on":""}" onclick="setMood('${k}')">${e} ${l}</button>`).join("")+`<br><button class="alt" onclick="hugNow();modalClose()">Send a hug 🤗</button><br><br><button onclick="modalClose();openJar()">💌 Open our note jar</button><small style="display:block;margin-top:8px">Notes live only in the jar — nothing shows under the cards</small>`)}
 function pushMood(){const w=SWHO||"m";syncPut("p"+w,{mood:S.mood[w],note:S.note[w]||""});save();moodUI();sceneTick(true)}
 function setMood(k){const w=SWHO||"m";S.mood[w]=k;if(k==="off")SKT=Date.now();pushMood();modalClose();say(k==="off"?"Taking some space… 🥺":"Mood updated "+moods().find(m=>m[0]===k)[1],2500)}
-function setNote(){const w=SWHO||"m";S.note[w]=$("noteIn").value.slice(0,40);pushMood();modalClose()}
+function setNote(){/* notes only through jar now */modalClose();if(typeof openJar==="function")openJar()}
 $("bMood").onclick=openMood;
 const _sL=setLook,_sP=setPrev,lookSub=()=>({...S.look});
 setLook=function(l,q,k){_sL(l,q,k);syncPut("look",{l:lookSub()})};
@@ -981,6 +1078,213 @@ const _mb2=$("bMom").onclick;
 $("bMom").onclick=function(){_mb2.apply(this,arguments);try{$("card").insertAdjacentHTML("beforeend","<h4>\uD83C\uDFAC All scenes as ambient moments</h4><small>Shows on the main screen for both of you</small><br>"+Object.keys(SCN).map(k=>`<button class="chip" onclick="setPrev('scOv','sc:${k}')">${SCN[k].i} ${SCN[k].n}</button>`).join(""))}catch(e){}};
 try{ctlUI()}catch(e){}
 }catch(e){try{console.error("v2b patch",e)}catch(_){}}
+
+/* ---- v3: lots of outfits + save everything ---- */
+try{
+const hx=(h,s,l)=>{h=((h%360)+360)%360;s=Math.max(0,Math.min(100,s))/100;l=Math.max(4,Math.min(96,l))/100;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12,c=l-a*Math.max(-1,Math.min(k-3,9-k,1));return Math.round(255*c).toString(16).padStart(2,"0")};return"#"+f(0)+f(8)+f(4)};
+const FAM=[["Ruby",350,75,0],["Coral",12,80,0],["Orange",28,85,0],["Gold",45,85,0],["Lemon",56,85,0],["Lime",90,60,0],["Mint",150,55,0],["Teal",175,65,-4],["Cyan",190,75,0],["Sky",205,80,0],["Royal",225,70,-4],["Indigo",250,60,-4],["Violet",270,60,0],["Orchid",295,55,0],["Pink",325,75,4],["Rose",340,65,2],["Black",230,8,-32],["White",210,10,38],["Grey",220,6,0],["Beige",35,30,15],["Navy",222,60,-12],["Maroon",345,60,-8],["Olive",70,40,-4],["Brown",24,45,-6]];
+const STY=[
+["Casual","Everyday us \uD83D\uDC99",(h,s,b)=>({m:{B:hx(h,s,48+b),G:hx(h,s*.5,22+b/2),P:hx(h,s*.8,80)},k:{D:hx(h,s,55+b),L:hx(h,s*.55,86)}})],
+["Date","Date night, you and me \uD83C\uDF19",(h,s,b)=>({m:{B:hx(h,s,25+b),G:hx(h,s*.4,12),P:"#e6b84a"},k:{D:hx(h,s,38+b),L:hx(h,s*.8,72)}})],
+["Party","Dressed to dance \uD83C\uDF89",(h,s,b)=>({m:{B:hx(h,Math.max(s,70),55+b),G:hx(h,10,10),P:hx(h+20,90,85)},k:{D:hx(h,Math.max(s,70),60+b),L:hx(h+30,90,72)}})],
+["Cozy","Soft clothes, warm hugs \uD83E\uDDF8",(h,s,b)=>({m:{B:hx(h,s*.5,80+b/2),G:hx(h,s*.4,45),P:hx(h,s*.5,30)},k:{D:hx(h,s*.5,75+b/2),L:hx(h,s*.4,55)}})]];
+if(OUT.length<20){for(const f of FAM)for(const s of STY){const c=s[2](f[1],f[2],f[3]);OUT.push({n:f[0]+" "+s[0],q:s[1],m:c.m,k:c.k})}}
+
+/* saved moments + saved looks (both phones share them) */
+window.favMomSave=()=>{if(!S.scOv||S.scOv==="auto")return;const a=(S.favMom||[]).slice();if(a.indexOf(S.scOv)<0)a.push(S.scOv);S.favMom=a;save();$("bMom").onclick()};
+window.lookSave=()=>{const a=(S.slots||[]).slice();a.push({...S.look});if(a.length>40)a.shift();S.slots=a;save();$("bMom").onclick()};
+window.favDel=(k,i)=>{const a=(S[k]||[]).slice();a.splice(i,1);S[k]=a;save();$("bMom").onclick()};
+if(!Array.isArray(S.favMom))S.favMom=[];
+const _mb3=$("bMom").onclick;
+$("bMom").onclick=function(){_mb3.apply(this,arguments);try{
+const cur=S.scOv&&S.scOv!=="auto"?(KIND_TXT[S.scOv]||S.scOv):"";
+const lab=k=>KIND_TXT[k]||k;
+let h="<h4>\uD83D\uDCBE Save things</h4>";
+h+=cur?`<button class="chip" onclick="favMomSave()">\uD83D\uDCBE Save current moment: ${cur}</button>`:"<small>Pick a moment or scene above, then save it here</small><br>";
+h+=`<button class="chip" onclick="lookSave()">\uD83D\uDCBE Save current look (${OUT[S.look.o]?OUT[S.look.o].n:"look"})</button>`;
+const fm=S.favMom||[];if(fm.length)h+="<h4>\u2B50 Saved moments</h4>"+fm.map((k,i)=>`<button class="chip" onclick="setPrev('scOv','${k}')">${lab(k)}</button><button class="chip" onclick="favDel('favMom',${i})">\u2715</button>`).join("");
+const sl=S.slots||[];if(sl.length)h+="<h4>\u2B50 Saved looks</h4>"+sl.map((l,i)=>`<button class="chip" onclick="loadSlot(${i})">Look ${i+1} \u00B7 ${OUT[l.o]?OUT[l.o].n:""}</button><button class="chip" onclick="favDel('slots',${i});">\u2715</button>`).join("");
+$("card").insertAdjacentHTML("beforeend",h)}catch(e){}};
+}catch(e){try{console.error("v3 patch",e)}catch(_){}}
+
+/* ---- v4: hair, many more outfits, save everything, simpler controls ---- */
+try{
+const css=document.createElement("style");
+css.textContent="#cS,#cSp{display:none!important}#ctl .btn{white-space:nowrap}.hairrow{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}";
+document.head.appendChild(css);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const mix=(h,w,t)=>{const p=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16));const a=p(h),b=p(w);return"#"+a.map((v,i)=>Math.round(v*(1-t)+b[i]*t).toString(16).padStart(2,"0")).join("")};
+
+/* ---------- hair ---------- */
+const HC=[["Black","#1a1620"],["Dark brown","#3a2418"],["Brown","#5a3a24"],["Chestnut","#7a4a2a"],["Auburn","#8a3a22"],["Ginger","#c8602a"],["Honey","#c89a4a"],["Blonde","#e0c068"],["Platinum","#eee8d0"],["White","#f4f4f8"],["Silver","#aab0bc"],["Grey","#7b7f88"],["Red","#c01e2e"],["Wine","#6a1034"],["Pink","#ff7fb0"],["Hot pink","#ff3d8a"],["Purple","#8a4cd8"],["Lavender","#b9a0f0"],["Blue","#2f6fe0"],["Sky blue","#6ac4f4"],["Teal","#1fb5a0"],["Green","#2fb85a"],["Mint","#7ee8b0"],["Orange","#ff8a3d"],["Yellow","#f4ec3a"]];
+const HS=[
+["Original",[]],
+["Spiky",[[-2,"....%.%..%.%...."],[-1,"....%%%%%%%%...."]]],
+["Mohawk",[[-4,".......%%......."],[-3,".......%%......."],[-2,"......%%%%......"],[-1,"......%%%%......"]]],
+["Bun",[[-3,"......%%%%......"],[-2,"......%%%%......"],[-1,".......%%......."]]],
+["Twin buns",[[-2,"...%%......%%..."],[-1,"...%%%....%%%..."]]],
+["Ponytail",[[0,"............%..."],[1,"............%%%."],[2,"..............%%"],[3,"..............%%"],[4,"..............%%"],[5,"..............%%"],[6,"..............%%"],[7,"...............%"]]],
+["Pigtails",[[4,".%%..........%%."],[5,".%%..........%%."],[6,".%%..........%%."],[7,".%%..........%%."],[8,".%%..........%%."],[9,"..%..........%.."]]],
+["Long",[[9,"..%..........%.."],[10,"..%..........%.."],[11,"..%..........%.."],[12,"..%..........%.."],[13,"..%..........%.."]]],
+["Afro",[[-3,"....%%%%%%%%...."],[-2,"..%%%%%%%%%%%%.."],[-1,".%%%%%%%%%%%%%%."],[0,".%%%%%%%%%%%%%%."],[1,".%%%%%%%%%%%%%%."],[2,".%%%%%%%%%%%%%%."],[3,".%%%%......%%%%."],[4,".%%%........%%%."],[5,".%%%........%%%."],[6,".%%%........%%%."],[7,".%%%........%%%."]]],
+["Fringe",[[3,"...%%%%%%%%%%..."]]],
+["Side swoop",[[3,"..%%%%%%%%%%...."],[4,"..%%%%%%........"]]],
+["Messy",[[-2,".....%..%.%....."],[-1,"...%%%.%%%%%%%.."],[3,"...%.%....%.%..."]]],
+["Bob",[[5,"...%........%..."],[6,"...%........%..."],[7,"...%........%..."],[8,"...%........%..."],[9,"...%........%..."]]],
+["Braid",[[9,"............%..."],[10,"............%%.."],[11,"............%..."],[12,"............%%.."],[13,"............%..."],[14,"............%%.."]]],
+["Curtain",[[3,"..%%%%....%%%%.."],[4,"..%%........%%.."]]],
+["Undercut",[[0,"....%%%%%%%%%%.."],[1,"....%%%%%%%%%%.."],[2,"....%%%%%%%%...."]]],
+["Space buns",[[-3,"..%%........%%.."],[-2,"..%%%......%%%.."],[-1,"...%%......%%..."]]],
+["Half-up",[[-2,"......%%%%......"],[-1,".....%%%%%%....."],[9,"..%..........%.."],[10,"..%..........%.."]]],
+["Wavy long",[[8,".%............%."],[9,".%............%."],[10,".%............%."],[11,"..%..........%.."],[12,"..%..........%.."],[13,"...%........%..."]]],
+["Short crop",[[1,"....%%%%%%%%...."],[2,"...%%%%%%%%%%..."]]],
+["Hime",[[2,"%%%%%%%%%%%%%%%%"],[3,"%%%%%%%%%%%%%%%%"],[5,"%%............%%"],[6,"%%............%%"],[7,"%%............%%"]]],
+["Wolf cut",[[-1,"...%%......%%..."],[0,"..%%%%....%%%%.."],[1,".%%%%%%..%%%%%%."],[8,".%............%."],[9,".%............%."],[10,"..%..........%.."]]],
+["Top knot",[[-4,".......%%......."],[-3,"......%%%%......"],[-2,"......%%%%......"],[-1,".......%%......."]]]
+];
+const hairOv=w=>{const L=S.look;if(L.c)return[];const st=HS[(w==="m"?L.hsm:L.hsn)|0];if(!st||!st[1].length)return[];const ch=w==="m"?"K":"N";return st[1].map(([r,s])=>[r,s.replace(/%/g,ch)])};
+const _of=ovFor;ovFor=()=>{const o=_of();return[hairOv("m").concat(o[0]),hairOv("n").concat(o[1])]};
+const _pb=palBase;palBase=function(){const p=_pb(),L=S.look;if(!L.c){if(L.hcm)p.K=L.hcm;if(L.hcn){p.N=L.hcn;p.T=mix(L.hcn,"#ffffff",.28)}}return p};
+window.hairSet=(k,v,fn)=>{setLook({[k]:S.look[k]===v?0:v});try{if(fn&&window[fn])window[fn](true)}catch(e){}};
+const hairHTML=fn=>{const L=S.look;if(L.c)return"<h4>💇 Hair</h4><small>Hair works for Mani &amp; Ninu, switch the pair back to change it</small>";
+const dots=k=>HC.map(([n,c])=>`<button class="dot${L[k]===c?" on":""}" aria-label="${n}" style="background:${c}" onclick="hairSet('${k}','${c}','${fn}')"></button>`).join("");
+const sty=k=>HS.map((s,i)=>`<button class="chip${(L[k]|0)===i?" on":""}" onclick="hairSet('${k}',${i},'${fn}')">${s[0]}</button>`).join("");
+return`<h4>💇 Mani hair style</h4>${sty("hsm")}<h4>Mani hair colour</h4>${dots("hcm")}<h4>💇 Ninu hair style</h4>${sty("hsn")}<h4>Ninu hair colour</h4>${dots("hcn")}`};
+
+/* ---------- lots more outfits (added after the old ones so saved numbers never change) ---------- */
+const hx=(h,s,l)=>{h=((h%360)+360)%360;s=Math.max(0,Math.min(100,s))/100;l=Math.max(4,Math.min(96,l))/100;const a=s*Math.min(l,1-l),f=n=>{const k=(n+h/30)%12,c=l-a*Math.max(-1,Math.min(k-3,9-k,1));return Math.round(255*c).toString(16).padStart(2,"0")};return"#"+f(0)+f(8)+f(4)};
+const FAM2=[["Ruby",350,75,0],["Coral",12,80,0],["Orange",28,85,0],["Gold",45,85,0],["Lemon",56,85,0],["Lime",90,60,0],["Mint",150,55,0],["Teal",175,65,-4],["Cyan",190,75,0],["Sky",205,80,0],["Royal",225,70,-4],["Indigo",250,60,-4],["Violet",270,60,0],["Orchid",295,55,0],["Pink",325,75,4],["Rose",340,65,2],["Black",230,8,-32],["White",210,10,38],["Grey",220,6,0],["Beige",35,30,15],["Navy",222,60,-12],["Maroon",345,60,-8],["Olive",70,40,-4],["Brown",24,45,-6]];
+const STY2=[
+["Sporty","Track suit energy 🏃",(h,s,b)=>({m:{B:hx(h,s,46+b),G:hx(h,s*.3,20),P:"#ffffff"},k:{D:hx(h,s,50+b),L:hx(h,s*.3,24)}})],
+["Formal","Dressed up for you 🤵",(h,s,b)=>({m:{B:hx(h,s*.4,16+b),G:hx(h,s*.3,10),P:"#dddddd"},k:{D:hx(h,s*.5,22+b),L:hx(h,s*.4,14)}})],
+["Street","Hoodie vibes 🧢",(h,s,b)=>({m:{B:hx(h,Math.max(s,50),50+b),G:hx(h,12,16),P:hx(h,60,75)},k:{D:hx(h,Math.max(s,50),55+b),L:hx(h,12,20)}})],
+["Beach","Sun, sand, us 🏖️",(h,s,b)=>({m:{B:hx(h,s,70+b/2),G:hx(h+30,s,62),P:"#ffe9a8"},k:{D:hx(h+20,s,68+b/2),L:hx(h,s*.8,60)}})],
+["Winter","Warm layers ❄️",(h,s,b)=>({m:{B:hx(h,s*.6,32+b),G:hx(h,s*.3,14),P:"#e8e8f0"},k:{D:hx(h,s*.6,38+b),L:hx(h,s*.3,18)}})],
+["Pastel","Soft and sweet 🍬",(h,s,b)=>({m:{B:hx(h,s*.55,84),G:hx(h+40,s*.4,86),P:hx(h,40,92)},k:{D:hx(h+20,s*.55,86),L:hx(h-30,s*.4,84)}})],
+["Neon","Glow up ✨",(h,s,b)=>({m:{B:hx(h,100,55),G:hx(h+180,100,45),P:hx(h+60,100,65)},k:{D:hx(h+30,100,58),L:hx(h+210,100,42)}})],
+["Denim","Blue jeans, our jam 👖",(h,s,b)=>({m:{B:hx(h,s,52+b),G:"#34507d",P:"#e8e0d0"},k:{D:hx(h,s,58+b),L:"#3b5b8c"}})],
+["Gothic","Dark and dreamy 🦇",(h,s,b)=>({m:{B:hx(h,s*.5,12),G:hx(h,s*.3,8),P:hx(h,90,45)},k:{D:hx(h,s*.5,14),L:hx(h,s*.3,9)}})],
+["Traditional","Desi style 🪔",(h,s,b)=>({m:{B:hx(h,s,40+b),G:"#f1e7d2",P:"#e6b84a"},k:{D:hx(h,s,48+b),L:hx(h+20,s*.9,36)}})],
+["Royal","King and queen 👑",(h,s,b)=>({m:{B:hx(h,s,30+b),G:hx(h,s*.7,18),P:"#f2c94c"},k:{D:hx(h,s,40+b),L:hx(h,s*.8,26)}})],
+["Twinning","Matching, always 💞",(h,s,b)=>({m:{B:hx(h,s,52+b),G:hx(h,s*.5,30),P:hx(h,s,78)},k:{D:hx(h,s,52+b),L:hx(h,s*.5,30)}})]];
+if(OUT.length<200){for(const f of FAM2)for(const s of STY2){const c=s[2](f[1],f[2],f[3]);OUT.push({n:f[0]+" "+s[0],q:s[1],m:c.m,k:c.k})}}
+
+/* ---------- save everything ---------- */
+const AN=i=>(AUR[i]||["Sky"])[0];
+const nm=(arr,i,d)=>(arr[i|0]||[d,d])[0];
+const FV={
+sky:{t:"sky",cur:()=>({a:S.look.a|0}),lab:x=>"🌌 "+AN(x.a),use:x=>setLook(x)},
+outfit:{t:"outfit",cur:()=>{const L=S.look;return{o:L.o|0,mt:L.mt||0,mb:L.mb||0,nt:L.nt||0,nb:L.nb||0}},lab:x=>"👗 "+(OUT[x.o]?OUT[x.o].n:"Outfit")+((x.mt||x.mb||x.nt||x.nb)?" ✎":""),use:x=>setLook(x)},
+cos:{t:"costumes",cur:()=>({m:S.look.m|0,n:S.look.n|0}),lab:x=>"🎩 "+((ACC[x.m]||[0,"–"])[1])+" + "+((ACC[x.n]||[0,"–"])[1]),use:x=>setLook(x)},
+hair:{t:"hair",cur:()=>{const L=S.look;return{hcm:L.hcm||0,hcn:L.hcn||0,hsm:L.hsm|0,hsn:L.hsn|0}},lab:x=>"💇 "+(HS[x.hsm|0]||HS[0])[0]+" / "+(HS[x.hsn|0]||HS[0])[0],use:x=>setLook(x)},
+char:{t:"pair",cur:()=>({c:S.look.c|0,h:S.look.h|0}),lab:x=>x.c?"🦇 Battu & Mewnu · "+((SUITS[x.h]||{}).n||""):"💙 Mani & Ninu",use:x=>setLook(x)},
+note:{t:"note",cur:()=>{const w=SWHO||"m",n=(S.note||{})[w];return n?{s:n}:null},lab:x=>"💬 "+x.s,use:x=>{const w=SWHO||"m";S.note[w]=x.s;pushMood()}}
+};
+window.fvAdd=(t,fn)=>{const d=FV[t],c=d.cur();if(!c){say("Nothing to save yet",1500);return}const a=((S.fav||{})[t]||[]).slice(),j=JSON.stringify(c);if(!a.some(x=>JSON.stringify(x)===j)){a.push(c);if(a.length>60)a.shift()}S.fav={...(S.fav||{}),[t]:a};save();try{say("Saved 💾",1500)}catch(e){}try{if(fn&&window[fn])window[fn](true)}catch(e){}};
+window.fvUse=(t,i,fn)=>{const x=((S.fav||{})[t]||[])[i];if(!x)return;FV[t].use(x);try{say("Applied ✔",1500)}catch(e){}try{if(fn&&window[fn])window[fn](true)}catch(e){}};
+window.fvDel=(t,i,fn)=>{const a=((S.fav||{})[t]||[]).slice();a.splice(i,1);S.fav={...(S.fav||{}),[t]:a};save();try{if(fn&&window[fn])window[fn](true)}catch(e){}};
+const favBlock=(types,fn)=>"<h4>💾 Save</h4>"+types.map(t=>{const d=FV[t],c=d.cur(),arr=((S.fav||{})[t])||[];
+return(c?`<div class="hairrow"><button class="chip" onclick="fvAdd('${t}','${fn}')">💾 Save ${d.t}: ${esc(d.lab(c))}</button></div>`:"")+(arr.length?`<div class="hairrow">${arr.map((x,i)=>`<button class="chip" onclick="fvUse('${t}',${i},'${fn}')">⭐ ${esc(d.lab(x))}</button><button class="chip" onclick="fvDel('${t}',${i},'${fn}')">✕</button>`).join("")}</div>`:"")}).join("");
+const addTo=(name,sel,types)=>{const o=window[name];window[name]=function(){const r=o.apply(this,arguments);try{const el=typeof sel==="string"?$(sel):sel();if(el)el.insertAdjacentHTML("beforeend",hairHTML(name)+favBlock(types,name))}catch(e){try{console.error("v4 "+name,e)}catch(_){}}return r}};
+addTo("openSkins","card",["sky","outfit","cos","hair"]);
+addTo("openChars","card",["char"]);
+addTo("panel","pextra",["sky","outfit","cos","hair"]);
+const _om=window.openMood;window.openMood=function(){const r=_om.apply(this,arguments);try{$("card").insertAdjacentHTML("beforeend",favBlock(["note"],"openMood"))}catch(e){}return r};
+$("bMood").onclick=()=>openMood();
+
+/* save button on the moment bar (replaces Sound / Speed / Exit, those are gone) */
+try{if($("cX"))$("cX").textContent="✕ Cancel"}catch(e){}
+try{ctlUI()}catch(e){}
+}catch(e){try{console.error("v4 patch",e)}catch(_){}}
+
+/* ---- v5: cute note jar, notifications, cancel buttons (meet-date tile removed) ---- */
+try{
+const st=document.createElement("style");
+st.textContent="#tMeet{display:none!important}"
++".cl .note{display:none!important}"
++"#tJar{cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}#tJar canvas{width:58px;height:auto;image-rendering:pixelated;animation:jarf 3.2s ease-in-out infinite;filter:drop-shadow(0 4px 8px #0006)}#tJar span{text-align:center}"
++"@keyframes jarf{50%{transform:translateY(-3px) rotate(-2deg)}}#tJar.new{box-shadow:0 0 0 2px #ff9ccf,0 0 22px #ff6b9daa}"
++"#noteBan{position:fixed;left:12px;right:12px;top:max(12px,env(safe-area-inset-top));z-index:99999;background:#1b1230f2;border:1px solid #ff9ccf88;color:#fff;border-radius:16px;padding:12px 14px;font:600 14px Outfit,sans-serif;box-shadow:0 8px 30px #000a;transform:translateY(-140%);transition:transform .35s}#noteBan.on{transform:none}"
++".xbar{position:sticky;top:-1px;z-index:5;display:flex;justify-content:flex-end;margin:-6px -4px 4px}.xbar button{padding:6px 12px;font-size:12px}"
++".jn{background:#fff0f6;color:#3a2430;border-left:4px solid #ff9ccf;border-radius:10px;padding:8px 10px;margin:8px 0;text-align:left}.jn.me{border-color:#8fd0ff;background:#eef8ff}.jh{font-size:11px;color:#7a5a6a;display:flex;justify-content:space-between}.jh a{cursor:pointer;padding:0 4px}.jt{font-size:15px;font-weight:600;margin-top:2px;word-break:break-word}"
++".jpaper{background:#fffdf5;color:#5a2a40;border-radius:6px;padding:16px;margin:10px 0;transform:rotate(-1.5deg);box-shadow:0 6px 18px #0006;font:700 17px Outfit,sans-serif;text-align:center;animation:jpop .35s}@keyframes jpop{from{transform:scale(.6) rotate(-6deg);opacity:0}}";
+document.head.appendChild(st);
+const esc=s=>String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const who=()=>SWHO||"m",other=()=>who()==="m"?"n":"m",nameOf=w=>NM()[w==="m"?0:1];
+
+/* ---- cancel buttons ---- */
+const _modal=modal;
+modal=function(h,t,noclose){_modal(h,t,noclose);try{if(!noclose)$("card").insertAdjacentHTML("afterbegin",'<div class="xbar"><button class="alt" onclick="modalClose()">\u2715 Cancel</button></div>')}catch(e){}};
+try{$("pExit").textContent="\u2715 Cancel"}catch(e){}
+
+/* ---- the jar: data ---- */
+if(!Array.isArray(S.jar))S.jar=[];
+const live=()=>(S.jar||[]).filter(x=>!x.d);
+const ago=at=>{const m=Math.max(0,Math.round((Date.now()+SOFF-at)/60000));return m<1?"just now":m<60?m+"m ago":m<1440?Math.round(m/60)+"h ago":Math.round(m/1440)+"d ago"};
+const latestOther=()=>{const o=other(),j=live().filter(x=>x.w===o).sort((a,b)=>b.at-a.at)[0];return j?{id:j.id,text:j.s}:null};
+const unreadNow=()=>{const l=latestOther();return l&&SLS("noteSeen")!==l.id?l:null};
+const markSeen=()=>{const l=latestOther();if(l)SLS("noteSeen",l.id)};
+window.jarAdd=text=>{text=String(text||"").trim().slice(0,80);if(!text)return;const w=who(),a=(S.jar||[]).slice();a.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,5),w,s:text,at:Date.now()+SOFF});S.jar=a.slice(-80);try{SLS("noteAt",String(Date.now()+SOFF))}catch(e){}save();try{sdiff()}catch(e){}jarTile();try{askNotif()}catch(e){}};
+window.jarDel=id=>{S.jar=(S.jar||[]).map(x=>x.id===id&&x.w===who()?{...x,d:1}:x);save();openJar()};
+window.jarPull=()=>{const j=live();const el=$("jarPull");if(!el)return;if(!j.length){el.innerHTML="<small>Nothing in the jar yet</small>";return}const x=j[Math.random()*j.length|0];el.innerHTML='<div class="jpaper">\uD83D\uDC8C<br>'+esc(x.s)+'<br><small>\u2014 '+esc(nameOf(x.w))+'</small></div>'};
+window.openJar=function(){markSeen();const me=who(),j=live().sort((a,b)=>b.at-a.at);
+ const items=j.map(x=>`<div class="jn ${x.w===me?"me":""}"><div class="jh"><span>${esc(nameOf(x.w))} \u00B7 ${ago(x.at)}</span>${x.w===me?`<a onclick="jarDel('${x.id}')">\u2715</a>`:""}</div><div class="jt">${esc(x.s)}</div></div>`).join("")||"<small>The jar is empty. Write the first note \uD83D\uDC8C</small>";
+ modal("\uD83D\uDC8C Our note jar",`<input id="jarIn" maxlength="80" placeholder="write a little note\u2026" style="width:100%;padding:10px;border-radius:12px;border:1px solid #0003;margin:6px 0"><br><button onclick="jarAdd(document.getElementById('jarIn').value);openJar()">Drop in the jar \uD83D\uDC8C</button> <button class="alt" onclick="jarPull()">\uD83C\uDFB2 Pull a note</button><div id="jarPull"></div>${items}`);
+ jarTile()};
+
+/* ---- the jar tile (pixel art) ---- */
+const tile=document.createElement("div");tile.className=$("tMeet").className;tile.id="tJar";
+const cv=document.createElement("canvas");cv.width=24;cv.height=27;const sp=document.createElement("span");
+tile.appendChild(cv);tile.appendChild(sp);$("tMeet").after(tile);tile.onclick=()=>openJar();
+let fr=0;
+function drawJar(n,unread){const x=cv.getContext("2d");x.clearRect(0,0,24,27);const R=(c,a,b,w,h)=>{x.fillStyle=c;x.fillRect(a,b,w,h)};
+ R("rgba(170,215,255,.22)",4,9,16,16);
+ const cols=["#ff9ccf","#ffd86b","#8be8c3","#c9a8ff","#ff8f8f","#8fd0ff"],k=Math.min(n,12);
+ for(let i=0;i<k;i++){const cx=5+(i%3)*5,cy=21-((i/3)|0)*4,c=cols[i%cols.length];R(c,cx,cy,4,3);R("rgba(255,255,255,.65)",cx,cy,4,1);R("rgba(0,0,0,.14)",cx+3,cy+1,1,2);R("rgba(255,255,255,.9)",cx+1,cy+1,1,1)}
+ if(unread){R("#fffdf5",10,1,6,8);R("#ff6b9d",11,3,1,1);R("#ff6b9d",13,3,1,1);R("#ff6b9d",11,4,3,1);R("#ff6b9d",12,5,1,1)}
+ R("#d6ecff",3,9,1,16);R("#d6ecff",20,9,1,16);R("#d6ecff",4,25,16,1);R("#d6ecff",3,24,1,1);R("#d6ecff",20,24,1,1);
+ R("rgba(255,255,255,.6)",4,10,1,5);R("rgba(255,255,255,.35)",4,16,1,2);
+ R("#ff7eb6",3,6,18,3);R("#ffb3d6",3,6,18,1);R("#d9548f",3,8,18,1);
+ R("#ffd86b",8,3,3,3);R("#ffd86b",13,3,3,3);R("#ffe9a0",8,3,3,1);R("#ffe9a0",13,3,3,1);R("#f0b93a",11,4,2,3);
+ const sp2=[[1,5],[22,11],[21,3],[2,18]];sp2.forEach((p,i)=>{if((fr+i)%4<2)R("#fff",p[0],p[1],1,1)})}
+function jarTile(){const n=live().length,u=!!unreadNow();drawJar(n,u);tile.classList.toggle("new",u);sp.textContent=u?"new note \uD83D\uDC8C":(n?"note jar \u00B7 "+n:"note jar")}
+setInterval(()=>{fr++;try{jarTile()}catch(e){}},700);
+
+/* ---- own note must never be overwritten by an older copy; jar merges from both phones ---- */
+/* setNote redirected — notes only live in the jar now */
+setNote=function(){modalClose();if(typeof openJar==="function")openJar()};
+let lastAnn="",lastMerge="";
+const _sa5=sapply;
+sapply=function(d){
+ try{const k="p"+who();if(d&&d[k]){const at=+SLS("noteAt")||0;if(at&&d[k].t<at&&(S.note[who()]||"")!==(d[k].note||"")){d={...d};delete d[k];if(!SQ[k])syncPut(k,{mood:S.mood[who()],note:S.note[who()]||""})}}}catch(e){}
+ const before=(S.jar||[]).slice();
+ _sa5(d);
+ try{
+  const rj=d&&d.s_jar&&Array.isArray(d.s_jar.v)?d.s_jar.v:null;
+  if(rj){const map=new Map();for(const x of rj.concat(before)){const p=map.get(x.id);map.set(x.id,p?(p.d?p:x.d?x:p):x)}
+   const merged=[...map.values()].sort((a,b)=>a.at-b.at).slice(-80),mj=JSON.stringify(merged);
+   if(mj!==JSON.stringify(S.jar)){S.jar=merged;SSNAP.jar=mj;try{localStorage.setItem("mn",JSON.stringify(S))}catch(e){}}
+   const remoteLacks=before.some(x=>!rj.some(y=>y.id===x.id)),localLacks=rj.some(y=>!before.some(x=>x.id===y.id));
+   if(remoteLacks&&localLacks&&mj!==lastMerge){lastMerge=mj;syncPut("s_jar",{v:merged})}}
+  const u=unreadNow();if(u&&u.id!==lastAnn){lastAnn=u.id;noteArrived(other(),u.text,u.id)}
+  jarTile()}catch(e){}
+};
+
+/* ---- notification when she/he leaves a note ---- */
+const ban=document.createElement("div");ban.id="noteBan";document.body.appendChild(ban);let bt=0;
+ban.onclick=()=>{ban.classList.remove("on");openJar()};
+function noteArrived(o,txt){
+ ban.innerHTML="\uD83D\uDC8C <b>"+esc(nameOf(o))+"</b> left a note in the jar:<br>"+esc(txt);ban.classList.add("on");clearTimeout(bt);bt=setTimeout(()=>ban.classList.remove("on"),9000);
+ try{navigator.vibrate&&navigator.vibrate([200,100,200])}catch(e){}
+ try{if(typeof chime==="function")chime([659,784])}catch(e){}
+ try{if("Notification"in window&&Notification.permission==="granted"&&document.hidden){navigator.serviceWorker.getRegistration().then(r=>{const op={body:txt,icon:"icon-192.png",tag:"note",vibrate:[200,100,200]};if(r&&r.showNotification)r.showNotification(nameOf(o)+" left a note \uD83D\uDC8C",op);else new Notification(nameOf(o)+" left a note \uD83D\uDC8C",op)})}}catch(e){}
+}
+window.askNotif=()=>{try{if("Notification"in window&&Notification.permission==="default")Notification.requestPermission()}catch(e){}};
+const _mu=moodUI;moodUI=function(){_mu();try{jarTile()}catch(e){}};
+const _om5=openMood;openMood=function(){const r=_om5.apply(this,arguments);try{const perm=("Notification"in window)?Notification.permission:"none";$("card").insertAdjacentHTML("beforeend",'<br><button onclick="openJar()">\uD83D\uDC8C Open our note jar</button>'+(perm==="default"?' <button class="alt" onclick="askNotif();this.remove()">\uD83D\uDD14 Turn on notifications</button>':""))}catch(e){}return r};
+$("bMood").onclick=()=>openMood();
+jarTile();
+}catch(e){try{console.error("v5 patch",e)}catch(_){}}
 try{if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{})}catch(e){}
 </script>
 </body>
