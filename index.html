@@ -270,8 +270,8 @@ const SUITS=[
 const isLing=()=>!S.look.c&&(S.look.o===10||S.look.o===11);
 const isNude=()=>!S.look.c&&S.look.o===12;
 const rowsFor=()=>S.look.c?[HM,HN]:isNude()?[MANI_NUDE,NINU_NUDE]:isLing()?[MANI_LING,NINU_LING]:[MANI,NINU];
-let ovFor=()=>S.look.c?[HOV_M,HOV_N]:[ACC[S.look.m][2],ACC[S.look.n][2]];
-function palBase(){const L=S.look;if(L.c){const h=SUITS[L.h];return{...PAL,...ACCP,W:h.boot,H:h.boot,O:h.boot,B:h.mb,G:h.mp,D:h.nb,L:h.np,V:h.mv,C:h.mc,X:h.nv,Z:h.nc}}return{...PAL,...OUT[L.o].m,...OUT[L.o].k,...ACCP}}
+let ovFor=()=>{const L=S.look||{};if(L.c)return[HOV_M,HOV_N];const am=ACC[L.m|0]||ACC[0],an=ACC[L.n|0]||ACC[0];return[am[2]||[],an[2]||[]]};
+function palBase(){const L=S.look||{};if(L.c){const h=SUITS[(L.h|0)%SUITS.length]||SUITS[0];return{...PAL,...ACCP,W:h.boot,H:h.boot,O:h.boot,B:h.mb,G:h.mp,D:h.nb,L:h.np,V:h.mv,C:h.mc,X:h.nv,Z:h.nc}}const o=OUT[(L.o|0)%Math.max(OUT.length,1)]||OUT[0]||{m:{},k:{}};return{...PAL,...(o.m||{}),...(o.k||{}),...ACCP}}
 const NM=()=>S.look.c?["Battu","Mewnu"]:["Mani","Ninu"];
 const HM_LINES=["Mewnu, rooftop date? 🦇💗","Gotham sleeps, I only watch you","Cape on, heart open 💜","Mewnu, you're my only weakness"];
 const HN_LINES=["Meow! Catch me, Battu 😼","Nine lives, one Battu 🐱","Stealing hearts, not jewels 💗","Purr… hi Battu 💛"];
@@ -291,6 +291,9 @@ $("bChar").onclick=()=>openChars();
 const MOMH=()=>"<small>Pick a moment</small><br>"+[["auto","⏱ Auto"],["kiss","💋 Kiss"],["longkiss","💗 Long kiss"],["cuddle","🧣 Cuddle"],["heartbeat","💓 Heartbeat"],["movie","🎬 Movie night"],["dance","💃 Slow dance"],["goodnight","🌙 Goodnight kiss"],["sulk","😤 Sulking"],["flowers","💐 Flowers"],["swing","🦇 Swing around the app"],["wildbed","🔥 Under the blanket"],["breakfast","🍳 Breakfast"],["dinner","🍽 Dinner"],["bath","🛁 Bath"],["sleep","🌙 Sleep"],["stand","🧍 Stand"]].map(([v,l])=>`<button class="chip" onclick="setPrev('scOv','${v}')">${l}</button>`).join("");
 let S={snd:1,me:null,moods:{},msg:null,look:{a:0,o:0,m:0,n:0,c:0,h:0,fx:-1}};
 try{Object.assign(S,JSON.parse(localStorage.getItem("mn")||"{}"))}catch(e){}
+S.look=Object.assign({a:0,o:0,m:0,n:0,c:0,h:0,fx:-1},S.look||{});
+S.look.o=Math.max(0,S.look.o|0);S.look.m=Math.max(0,S.look.m|0);S.look.n=Math.max(0,S.look.n|0);S.look.h=Math.max(0,S.look.h|0);S.look.a=Math.max(0,S.look.a|0);
+S.mood=Object.assign({m:"ok",n:"ok"},S.mood||{});S.note=Object.assign({m:"",n:""},S.note||{});
 S.look=Object.assign({a:0,o:0,m:0,n:0,c:0,h:0,fx:-1},S.look);S.mood=Object.assign({m:"ok",n:"ok"},S.mood);S.note=Object.assign({m:"",n:""},S.note);S.me="Ninu";S.scOv=S.scOv||"auto";S.wxOv="auto";
 const save=()=>{try{localStorage.setItem("mn",JSON.stringify(S))}catch(e){}try{sdiff()}catch(e){}};
 let HUE=140;
@@ -303,7 +306,7 @@ const PRE=[["Original","💙",0,0,0,0,-1,"Our first look 💙"],["Royal Couple",
 ["Garden","🌼",3,8,7,7,"🦋","Flower garden date 🌼"],["Diwali Lights","🪔",4,3,0,7,"🪔","Diwali lights for Ninu 🪔"],["Fireflies","🌌",9,9,0,0,"✨","Fireflies and aurora 🌌"],["Rainy Day","🌧️",2,7,0,0,"💧","Rain, chai and you 🌧️"]];
 function renderSprites(){const r=rowsFor(),o=ovFor(),p=palFor();draw("mani",r[0],p,16,8,4,o[0]);draw("ninu",r[1],p,16,8,4,o[1])}
 function setFx(){}
-function setLook(l,q,keep){if(typeof sceneTick==="function")setTimeout(()=>sceneTick(true),0);Object.assign(S.look,l);HUE=AUR[S.look.a][1];renderSprites();heroUI();setFx(S.look.fx);save();if(q){say(q,3500);ping();burst("✨",6,$("stage"))}if(keep)openSkins(true)}
+function setLook(l,q,keep){if(typeof sceneTick==="function")setTimeout(()=>sceneTick(true),0);Object.assign(S.look,l);HUE=(AUR[S.look.a|0]||AUR[0])[1];renderSprites();heroUI();setFx(S.look.fx);save();if(q){say(q,3500);ping();burst("✨",6,$("stage"))}if(keep)openSkins(true)}
 function saveSlot(){S.slots=S.slots||[];S.slots.push({...S.look});if(S.slots.length>40)S.slots.shift();save();say("Look saved 💾",2000);openSkins(true)}
 function loadSlot(i){Object.assign(S.look,S.slots[i]);setLook({});modalClose();say("Look loaded 💙",2000)}
 function openSkins(keep){const k=S.look,sc=keep?$("card").scrollTop:0;
@@ -333,7 +336,7 @@ const CUR=[{o:0,y:.34,a:.55,h:.36,w:.00032},{o:26,y:.26,a:.4,h:.3,w:.00026},{o:-
 let lf=0,nextS=4000;
 function frame(t){requestAnimationFrame(frame);if(t-lf<33)return;lf=t;const h=HUE;
   let g=sx.createLinearGradient(0,0,0,H);g.addColorStop(0,`hsl(${h+20},70%,2.5%)`);g.addColorStop(.55,`hsl(${h},55%,8%)`);g.addColorStop(1,`hsl(${h-10},45%,14%)`);
-  sx.globalCompositeOperation="source-over";sx.globalAlpha=1;sx.fillStyle=g;sx.fillRect(0,0,W,H);sx.drawImage(bg,0,0);
+  sx.globalCompositeOperation="source-over";sx.globalAlpha=1;sx.fillStyle=g;sx.fillRect(0,0,W,H);if(bg.width>0&&bg.height>0)sx.drawImage(bg,0,0);
   stars.forEach(p=>{sx.globalAlpha=.25+.75*Math.abs(Math.sin(t/900+p[3]));sx.fillStyle=p[4]>.7?"#cfe0ff":"#fff";sx.fillRect(p[0],p[1],p[2],p[2])});
   sx.globalAlpha=1;const mx=W*.84,my=H*.07,mr=H*.02,mg=sx.createRadialGradient(mx,my,mr*.4,mx,my,mr*5);mg.addColorStop(0,"rgba(255,250,225,.4)");mg.addColorStop(1,"rgba(255,250,225,0)");
   sx.fillStyle=mg;sx.fillRect(mx-mr*5,my-mr*5,mr*10,mr*10);sx.fillStyle="#fff8dc";sx.beginPath();sx.arc(mx,my,mr,0,7);sx.fill();
@@ -345,7 +348,7 @@ function frame(t){requestAnimationFrame(frame);if(t-lf<33)return;lf=t;const h=HU
     a=c.a*(.3+.7*ray)*fold,hh=AH*c.h*(.75+.25*Math.sin(u*9+t*c.w*2+i)),gr=ax.createLinearGradient(0,y-hh,0,y+AH*.02);
     gr.addColorStop(0,"hsla(280,85%,62%,0)");gr.addColorStop(.22,`hsla(280,85%,62%,${a*.4})`);gr.addColorStop(.5,`hsla(${hu+18},90%,58%,${a*.4})`);gr.addColorStop(.88,`hsla(${hu},95%,62%,${a})`);gr.addColorStop(1,`hsla(${hu-8},95%,70%,0)`);
     ax.fillStyle=gr;ax.fillRect(x,y-hh,2.2,hh+AH*.02)}});
-  const dim=1-.65*CLOUD;sx.globalCompositeOperation="lighter";sx.imageSmoothingEnabled=true;sx.globalAlpha=dim;sx.drawImage(au,0,0,W,H);sx.globalAlpha=.5*dim;sx.drawImage(au,-W*.015,-H*.015,W*1.03,H*1.03);sx.globalAlpha=1;
+  const dim=1-.65*CLOUD;sx.globalCompositeOperation="lighter";sx.imageSmoothingEnabled=true;sx.globalAlpha=dim;if(au.width>0&&au.height>0){sx.drawImage(au,0,0,W,H);sx.globalAlpha=.5*dim;sx.drawImage(au,-W*.015,-H*.015,W*1.03,H*1.03);}sx.globalAlpha=1;
   if(CLOUD>.01){const cg=sx.createLinearGradient(0,0,0,H*.7);cg.addColorStop(0,`rgba(20,28,40,${.55*CLOUD})`);cg.addColorStop(1,"rgba(20,28,40,0)");sx.globalCompositeOperation="source-over";sx.fillStyle=cg;sx.fillRect(0,0,W,H*.7)}
   sx.globalCompositeOperation="lighter";
   if(!shoot.length&&t>nextS){nextS=t+16000+Math.random()*16000;shoot.push({c:Math.random()<.5,x:Math.random()*W*.45,y:Math.random()*H*.18,p:0})}
@@ -625,7 +628,7 @@ setTimeout(()=>{if(!S.msg)say(DAILY[Math.floor(Date.now()/DAY)%DAILY.length],600
 let buf="";addEventListener("keydown",e=>{buf=(buf+e.key.toLowerCase()).slice(-24);if(buf.endsWith("ninu")||buf.endsWith("mani")){rain(["🌼","💙","✨"]);say("you found me 😳")}if(buf.endsWith("chai")){rain(["☕"],20);say("chai??? I'm coming ☕")}if(buf.endsWith("arrowuparrowuparrowdown"))modal("🎮 cheat code","Ninu gets unlimited hugs. Forever.")});
 setInterval(()=>{const h=P(NINU_TZ).hour;say(h>=22||h<5?"zzz… 💤":pick(["drink water, Ninu 💧","did you eat? 🍙","I miss you already","aurora just for you 🌌"]),3000)},45000);
 console.log("%cHey Ninu 💙 Mani was here. Tap the blinking colon 7 times.","font-size:14px;color:#2fbf9a");
-renderSprites();setFx(S.look.fx);HUE=AUR[S.look.a][1];heroUI();
+renderSprites();setFx(S.look.fx);HUE=(AUR[S.look.a|0]||AUR[0])[1];heroUI();
 
 /* ---- scene player + outfit system ---- */
 S.outfits=S.outfits||[];
